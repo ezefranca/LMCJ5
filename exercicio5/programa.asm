@@ -1,0 +1,24 @@
+ORG 0000H
+LJMP INICIO
+
+INICIO:  CLR P1.0 ;desliga motor 1
+	 CLR P1.1 ;desliga motor 2
+	
+MOTOR2:
+	 MOV R0, #00H ;zera o contador
+	 CLR P1.1 ;desliga motor 2
+	 SETB P1.1 ;liga motor 1
+
+SENSOR1: JNB P3.2, SENSOR1
+	 JNB P3.1, SENSOR1
+	 LJMP MOTOR1
+
+MOTOR1:	 CLR P1.1
+	 SETB P1.0  
+	 
+SENSOR0: JNB P3.0, SENSOR0
+SENSOR0_LOW: JB P3.0, SENSOR0_LOW
+	 INC R1
+	 CJNE R1, #20, SENSOR0
+	 LJMP MOTOR2
+END
